@@ -3,6 +3,8 @@
 This repository contains solutions to various programming tasks and exercises.  
 Each task is organized in its own package/folder.
 
+P.S. The task descriptions are taken from https://www.dailycodingproblem.com/
+
 ## Project Structure
 
 - `task_<number>/`
