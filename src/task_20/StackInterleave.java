@@ -10,51 +10,85 @@ import java.util.Stack;
  * @version 1.0 (17.02.2026)
  */
 public class StackInterleave {
-    public static void interleaveStack(Stack<Integer> stack) {
-        if (stack == null || stack.size() <= 1) return;
+    public static void main(String[] args) {
+        // Define our stack
+        Stack<Integer> stack = new Stack<>();
+        stack.addAll(Arrays.asList(1, 2, 3, 4, 5));
 
-        int n = stack.size();
+        // temp print
+        System.out.println("Initial stack: " + stack);
+        interleaveStack(stack);
+        System.out.println("After interleaving stack: " + stack);
+    }
+
+    public static void interleaveStack(Stack<Integer> stack) {
+        // Define the queue
         Queue<Integer> queue = new LinkedList<>();
 
-        // Moving all the items from the stack to the queue
+        // Check input stack
+        if (stack == null || stack.isEmpty()) {
+            System.out.println("Wrong input stack!");
+            return;
+        }
+
+        // Stack size
+        int n = stack.size();
+        // Half of a stack
+        int k = n / 2;
+
+//        System.out.println("Stack size: " + n + ", Stack half: " + k );
+
+        // Step 1: Reversing all elements in stack using queue
+        while (!stack.isEmpty()) {
+            queue.offer(stack.pop());
+        }
+        while (!queue.isEmpty()) {
+            stack.push(queue.poll());
+        }
+        //System.out.println("Reversing stack: " + stack);
+
+        // Step 2: Take k first elements from stack to the queue
+        for (int i = 0; i < k; i++) {
+            queue.offer(stack.pop());
+        }
+
+        // Step 3: Now we need to reverse back elements in stack
+        // for this we will do
+        // 1 take all elements from stack o the queue
+        // 2 put first k elements from queue beginning to the queue end
+        // 3 put n - k element to the stack
+
         while (!stack.isEmpty()) {
             queue.offer(stack.pop());
         }
 
-        // We move the elements back to the stack.
+        for (int i = 0; i < k; i++) {
+            queue.offer(queue.poll());
+        }
+        for (int i = 0; i < n - k; i++) {
+            stack.push(queue.poll());
+        }
+        //System.out.println("Our stack now: " + stack);
+        //System.out.println("Our queue now: " + queue);
+
+        // Step 4: Now we need to put elements in the wright order to the queue
+        // we alternate elements from queue and stack for k elements in queue
+        // after that we offer all elemets from stack to the queue
+        // final stap we put all elements from queue to the stack as results
+
+        for (int i = 0; i < k; i++) {
+            queue.offer(queue.poll()); // take element from queue
+            queue.offer(stack.pop()); // take element from stack
+        }
+
+        while (!stack.isEmpty()) {
+            queue.offer(stack.pop());
+        }
+
         while (!queue.isEmpty()) {
             stack.push(queue.poll());
         }
 
-        int halfSize = n / 2;
-
-        // Moving the first half to the queue
-        for (int i = 0; i < halfSize; i++) {
-            queue.offer(stack.pop());
-        }
-
-        // TODO: need to write this part! Noe it is did not work!!!
-        // Interleave the items from the queue and the remaining stack
-        while (!queue.isEmpty()) {
-            stack.push(queue.poll()); // we take an element from the first half
-            if (!stack.isEmpty()) {
-                stack.push(stack.pop()); // we take an element from the second half (reverse order)
-            }
-        }
     }
 
-    // Test
-    public static void main(String[] args) {
-        Stack<Integer> stack1 = new Stack<>();
-        stack1.addAll(Arrays.asList(1, 2, 3, 4, 5)); // top = 5
-        System.out.println("Start stack: " + stack1);
-        interleaveStack(stack1);
-        System.out.println("After the interleaving: " + stack1);
-
-        Stack<Integer> stack2 = new Stack<>();
-        stack2.addAll(Arrays.asList(1, 2, 3, 4)); // top = 4
-        System.out.println("\nStart stack: " + stack2);
-        interleaveStack(stack2);
-        System.out.println("After the interleaving: " + stack2);
-    }
 }
