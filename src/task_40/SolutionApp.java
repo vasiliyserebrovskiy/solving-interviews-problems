@@ -6,6 +6,23 @@ package task_40;
  */
 public class SolutionApp {
 
+    public static void main(String[] args) {
+
+        int[][] matrix = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+
+        System.out.println("Original matrix:");
+        printMatrix(matrix);
+
+        rotate2(matrix);
+
+        System.out.println("\nRotated matrix (90° clockwise):");
+        printMatrix(matrix);
+    }
+
     // Example 1: in-place
     public static void rotate(int[][] matrix) {
         int n = matrix.length;
@@ -56,6 +73,15 @@ public class SolutionApp {
                 matrix[i][j] = matrix[i][n - 1 - j];
                 matrix[i][n - 1 - j] = temp;
             }
+        }
+    }
+
+    public static void printMatrix(int[][] matrix) {
+        for (int[] row : matrix) {
+            for (int num : row) {
+                System.out.printf("%4d", num); // красивое выравнивание
+            }
+            System.out.println();
         }
     }
 }
